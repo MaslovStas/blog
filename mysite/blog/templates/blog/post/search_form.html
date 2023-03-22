@@ -1,0 +1,6 @@
+{% load django_bootstrap5 %}
+
+<form class="d-flex" action="{% url 'blog:post_search' %}" role="search" method="get">
+	{% bootstrap_field form.query wrapper_class="me-1" show_label=False placeholder="Search" %}
+	{% bootstrap_button button_class="btn-warning" button_type="submit" content="Search" %}
+</form>

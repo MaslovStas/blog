@@ -1,0 +1,66 @@
+{% load django_bootstrap5 %}
+{% load blog_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>{% block title %}{% endblock title %}</title>
+
+		{# Load CSS and JavaScript #}
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+		{# Display django.contrib.messages as Bootstrap alerts #}
+		{% bootstrap_messages %}
+		<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+	</head>
+
+	<body>
+		{# NavBar #}
+		<nav class="navbar bg-success">
+			<div class="container-fluid">
+				<a class="navbar-brand fw-bold" href="{% url 'blog:post_list' %}">My Blog</a>
+				
+				{% search_form %}
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				{# Content #}
+				<div class="col-9 p-4 border-end">
+					{% block content %}{% endblock content %}
+				</div>
+				{# Sidebar #}
+				<div class="col-3 p-4">
+					<div class="right-sidebar">
+						<h2>Posts</h2>
+						<hr />
+						<p>There`re {% total_posts %} posts</p>
+						{# RSS #}
+						<p><a href="{% url 'blog:post_feed' %}">Subscribe to my RSS feed</a></p>
+						<hr>
+						{# Latest Posts #}
+						<h4>Latest Posts</h4>
+						{% show_latest_posts %}
+						<hr>
+						{# Most Comments Posts #}
+						{% get_most_commented_posts as most_commented_posts %}
+						<h4>Most Commented Posts</h3>
+							<ul>
+								{% for post in most_commented_posts %}
+									<li>
+										<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+									</li>
+								{% endfor %}
+							</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Share a Post{% endblock title %}
+
+{% block content %}
+	{% if sent %}
+		{# Success #}
+		<h1>E-mail successfully sent</h1>
+		<p>{{ post.title }} was successfully sent to {{ form.cleaned_data.to }}</p>
+	{% else %}
+		{# Form #}
+		<h2>Share {{ post.title }}</h2>
+		<div class="row">
+			<div class="col-md-6 col-sm-12">
+				<form method="post">
+					{% csrf_token %}
+					
+					{% bootstrap_form form %}
+					{% bootstrap_button button_type="submit" content="Share the Post" %}
+				</form>
+			</div>
+		</div>
+	{% endif %}
+{% endblock content %}

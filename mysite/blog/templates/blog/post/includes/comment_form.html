@@ -1,0 +1,14 @@
+{% load django_bootstrap5 %}
+
+<div class=row>
+	<div class="col-6">
+		<h2>Add a new comment</h2>
+		
+		<form action="{% url 'blog:post_comment' post.id %}" method="post" novalidate>
+			{% csrf_token %}
+		
+			{% bootstrap_form form %}
+			{% bootstrap_button button_type="submit" content="Add comment" %}
+		</form>
+	</div>
+</div>

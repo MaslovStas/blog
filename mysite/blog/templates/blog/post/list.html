@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+{% block title %}My blog{% endblock title %}
+
+{% block content %}
+
+	<h1 class="text-center">
+		{% if tag %}Posts tagged by "{{ tag }}"
+		{% else %}All Posts
+		{% endif %}
+	</h1>
+
+	{% for post in posts %}
+		<a href="{{ post.get_absolute_url }}">
+			<h2>{{ post.title }}</h2>
+		</a>
+		<p class="fst-italic">Tags:
+			{% for tag in post.tags.all %}
+				<a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+					{{ tag }}{% if not forloop.last %},{% endif %}
+				</a>
+			{% endfor %}
+		</p>
+		<p class="text-muted">
+			Published {{ post.publish }} by {{ post.author }}
+		</p>
+
+		{{ post.body|markdown|truncatewords_html:30 }}
+		<hr>
+	{% endfor %}
+
+	{% include 'pagination.html' with page=posts %}
+
+{% endblock content %}
